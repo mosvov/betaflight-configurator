@@ -289,11 +289,11 @@ TABS.auxiliary.initialize = function (callback) {
 
             var diff_array = RC_channels.map(function(currentValue, index) {
                 return Math.abs(prevChannelsValues[index] - currentValue);
-            }, 0);
+            });
 
             var largest = diff_array.reduce(function(x,y){
                 return (x > y) ? x : y;
-            });
+            }, 0);
 
             //minimum change to autoselect is 100
             if (largest < 100) return fillPrevChannelsValues();
