@@ -289,9 +289,7 @@ TABS.auxiliary.initialize = function (callback) {
 
             var diff_array = RC_channels.map(function(currentValue, index) {
                 return Math.abs(prevChannelsValues[index] - currentValue);
-            });
-
-            if (!diff_array || diff_array.length === 0) return fillPrevChannelsValues();
+            }, 0);
 
             var largest = diff_array.reduce(function(x,y){
                 return (x > y) ? x : y;
