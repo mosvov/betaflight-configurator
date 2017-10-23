@@ -281,31 +281,31 @@ TABS.auxiliary.initialize = function (callback) {
                 return;
             }
 
-            if (!prevChannelsValues || RC_channels.length === 0) {
+            var fillPrevChannelsValues = function () {
                 prevChannelsValues = RC_channels.slice(0); //clone array
-                return;
             }
+
+            if (!prevChannelsValues || RC_channels.length === 0) return fillPrevChannelsValues();
 
             var diff_array = RC_channels.map(function(currentValue, index) {
                 return Math.abs(prevChannelsValues[index] - currentValue);
             });
+
+            if (!diff_array || diff_array.length === 0) return fillPrevChannelsValues();
 
             var largest = diff_array.reduce(function(x,y){
                 return (x > y) ? x : y;
             });
 
             //minimum change to autoselect is 100
-            if (largest < 100) {
-                prevChannelsValues = RC_channels.slice(0); //clone array
-                return;
-            }
+            if (largest < 100) return fillPrevChannelsValues();
 
             var indexOfMaxValue = diff_array.indexOf(largest);
             if (indexOfMaxValue >= 4){ //set channel
                 auto_option.parent().val(indexOfMaxValue - 4);
             }
 
-            prevChannelsValues = RC_channels.slice(0); //clone array
+            return fillPrevChannelsValues();
         }
 
         // update ui instantly on first load
