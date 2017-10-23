@@ -58,9 +58,8 @@ TABS.auxiliary.initialize = function (callback) {
 
         //add value to autodetect channel
         var channelOption = channelOptionTemplate.clone();
-        channelOption.text('AUTO SELECT');
+        channelOption.text(chrome.i18n.getMessage('auxiliaryAutoChannelSelect'));
         channelOption.val(-1);
-        channelOption.selected = true;
         channelList.append(channelOption);
 
         for (var channelIndex = 0; channelIndex < auxChannelCount; channelIndex++) {
@@ -69,6 +68,8 @@ TABS.auxiliary.initialize = function (callback) {
             channelOption.val(channelIndex);
             channelList.append(channelOption);
         }
+
+        channelOptionTemplate.val(-1);
     }
     
     function addRangeToMode(modeElement, auxChannelIndex, range) {
@@ -120,7 +121,7 @@ TABS.auxiliary.initialize = function (callback) {
             rangeElement.remove();
         });
 
-        //$(rangeElement).find('.channel').val(auxChannelIndex);
+        $(rangeElement).find('.channel').val(auxChannelIndex);
     }
 
     function process_html() {
@@ -152,29 +153,11 @@ TABS.auxiliary.initialize = function (callback) {
             }
 
         }
-
-        function findFirstUnusedChannel(modeElement) {
-            var auxChannelIndexCandidates = [];
-            for (var auxChannelIndex = 0; auxChannelIndex < auxChannelCount; auxChannelIndex++) {
-                auxChannelIndexCandidates.push(auxChannelIndex);
-            }
-            
-            $(modeElement).find('.channel').each( function() {
-                var valueToRemove = $(this).val();
-                auxChannelIndexCandidates = auxChannelIndexCandidates.filter(function(item) {
-                    return item != valueToRemove;
-                });
-            });
-            
-            return auxChannelIndexCandidates[0];
-        }
         
         $('a.addRange').click(function () {
             var modeElement = $(this).data('modeElement');
-            
-            var firstUnusedChannel = findFirstUnusedChannel(modeElement);
-            
-            addRangeToMode(modeElement, firstUnusedChannel);
+            //auto select AUTO option
+            addRangeToMode(modeElement, -1);
         });
                 
         // translate to user-selected language
@@ -298,7 +281,7 @@ TABS.auxiliary.initialize = function (callback) {
                 return;
             }
 
-            if (!prevChannelsValues) {
+            if (!prevChannelsValues || RC_channels.length === 0) {
                 prevChannelsValues = RC_channels.slice(0); //clone array
                 return;
             }
