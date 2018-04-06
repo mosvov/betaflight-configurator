@@ -6,6 +6,8 @@ Betaflight Configurator is a crossplatform configuration tool for the Betaflight
 
 It runs as an app within Google Chrome and allows you to configure the Betaflight software running on any [supported Betaflight target](https://github.com/betaflight/betaflight/tree/master/src/main/target).
 
+There is also now a standalone version available, since Google Chrome Apps are getting deprecated on platforms that aren't Chrome OS. [Downloads are available in Releases.](https://github.com/betaflight/betaflight-configurator/releases)
+
 Various types of aircraft are supported by the tool and by Betaflight, e.g. quadcopters, hexacopters, octocopters and fixed-wing aircraft.
 
 ## Authors
@@ -17,16 +19,20 @@ If you are experiencing any problems please make sure you are running the [lates
 
 ## Installation
 
-### Via chrome webstore
+### Standalone
+
+Download the installer from [Releases.](https://github.com/betaflight/betaflight-configurator/releases)
+
+### Via Chrome Web Store
 
 [![available in the Chrome web store](https://developer.chrome.com/webstore/images/ChromeWebStore_Badge_v2_206x58.png)](https://chrome.google.com/webstore/detail/betaflight-configurator/kdaghagfopacdngbohiknlhcocjccjao)
 
-1. Visit [Chrome web store](https://chrome.google.com/webstore/detail/betaflight-configurator/kdaghagfopacdngbohiknlhcocjccjao)
+1. Visit the [Betaflight Configurator product page in the Chrome web store](https://chrome.google.com/webstore/detail/betaflight-configurator/kdaghagfopacdngbohiknlhcocjccjao)
 2. Click **+ Add to Chrome**
 
 Please note - the application will automatically update itself when new versions are released.  Please ensure you maintain configuration backups as described in the Betaflight documentation.
 
-### Alternative way
+### Alternative way, Chrome app:
 
 1. Clone the repo to any local directory or download it as zip.
 2. Extract to a folder and not the folder.
@@ -41,6 +47,47 @@ Please note - the application will automatically update itself when new versions
 ## How to use
 
 You can find the Betaflight Configurator icon in your application tab "Apps"
+
+## Native app build via NW.js
+
+Linux build is disabled currently because of unmet dependecies with some distros, it can be enabled in the `gulpfile.js`.
+
+### Development
+
+1. Install node.js
+2. Change to project folder and run `npm install`.
+3. Run `npm start`.
+
+### App build and release
+
+The tasks are defined in `gulpfile.js` and can be run either via `gulp <task-name>` (if the command is in PATH or via `../node_modules/gulp/bin/gulp.js <task-name>`:
+
+1. Optional, install gulp `npm install --global gulp-cli`.
+2. Run `gulp <taskname> [[platform] [platform] ...]`.
+
+List of possible values of `<task-name>`:
+* **dist** copies all the JS and CSS files in the `./dist` folder.
+* **apps** builds the apps in the `./apps` folder [1].
+* **debug** builds debug version of the apps in the `./debug` folder [1].
+* **release** zips up the apps into individual archives in the `./release` folder [1]. 
+
+[1] Running this task on macOS or Linux requires Wine, since it's needed to set the icon for the Windows app (build for specific platform to avoid errors).
+
+#### Build or release app for one specific platform
+To build or release only for one specific platform you can append the plaform after the `task-name`.
+If no platform is provided, all the platforms will be done in sequence.
+
+* **MacOS** use `gulp <task-name> --osx64`
+* **Linux** use `gulp <task-name> --linux64`
+* **Windows** use `gulp <task-name> --win32`
+
+You can also use multiple platforms e.g. `gulp <taskname> --osx64 --linux64`.
+
+## Languages
+
+Betaflight Configurator has been translated into several languages. The application will try to detect and use your system language if a translation into this language is available. You can help [translating the application into your language](https://crowdin.com/project/betaflight-configurator).
+
+If you prefer to have the application in English or any other language, you can select your desired language in the options menu of the application.
 
 ## Notes
 
@@ -83,3 +130,5 @@ We accept clean and reasonable patches, submit them!
 ctn - primary author and maintainer of Baseflight Configurator from which Cleanflight Configurator project was forked.
 
 Hydra -  author and maintainer of Cleanflight Configurator from which this project was forked.
+
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/betaflight-configurator/localized.svg)](https://crowdin.com/project/betaflight-configurator)
